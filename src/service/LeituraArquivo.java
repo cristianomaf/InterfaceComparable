@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import entities.Funcionario;
+
 public class LeituraArquivo {
 	private String caminhoDoArquivo;
 	
@@ -28,18 +30,23 @@ public class LeituraArquivo {
 	// metodo leitura
 	
 	public void LeituraArq(String camArq) {
-		List<String> list = new ArrayList<>();  //lista
+		List<Funcionario> list = new ArrayList<>();  //lista
 	
 		try(BufferedReader br = new BufferedReader(new FileReader(camArq))) {
-			String nome = br.readLine(); // variavel nome recebe nomes de cada linha do arquivo que contera apenas nomes
+			String funcionarioCsv = br.readLine(); //variavel que le as linhas do arquivo funcionario csv
 			
-			while(nome != null) {  //enquanto nome for diferente de vazio
-				list.add(nome);   // adiciona nome na lista
-				nome = br.readLine(); // le a proxima linha
+			while(funcionarioCsv!= null) {  //enquanto funcinarios for diferente de vazio
+				
+				//***cria um vetor que cada expressao do arquivo fica em uma posicao do vetor(no caso um campo é indicado pelo separador virgula, cada virgula encontrada separa um campo 
+				String [] campos = funcionarioCsv.split(",");
+				
+				list.add(new Funcionario(campos[0], Double.parseDouble(campos[1])));   // adiciona nome na lista
+				funcionarioCsv = br.readLine(); // le a proxima linha
 			}
+			
 			Collections.sort(list);   //organiza lista
-			for(String s : list) {      //passa pela lista toda
-				System.out.println(s);  //imprimindo resultados
+			for(Funcionario emp: list) {      //passa pela lista toda
+				System.out.println(emp.getNome()+ ","+ emp.getSalario());  //imprimindo resultados
 			} 
 			
 		}catch (IOException e) {
